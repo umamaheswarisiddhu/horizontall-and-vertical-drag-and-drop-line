@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<style>
+.line-container {
+  position: relative;
+  width:auto;
+  height: 800px;
+  margin: 0px;
+  padding: 0px;
+}
+
+.horizontal-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: black;
+  cursor: ns-resize;
+}
+
+.vertical-line {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1px;
+  height: 100%;
+  background-color: black;
+  cursor: ew-resize;
+}
+	</style>
+</head>
+<body>
+	<div class="line-container">
+
+		<div class="horizontal-line"></div>
+		<div class="vertical-line"></div>
+	</div>
+	  <script>
+const horizontalLine = document.querySelector('.horizontal-line');
+const verticalLine = document.querySelector('.vertical-line');
+const lineContainer = document.querySelector('.line-container');
+
+let isDraggingHorizontal = false;
+let isDraggingVertical = false;
+
+let previousX;
+let previousY;
+
+horizontalLine.addEventListener('mousedown', (event) => {
+  isDraggingHorizontal = true;
+  previousY = event.clientY;
+});
+
+verticalLine.addEventListener('mousedown', (event) => {
+  isDraggingVertical = true;
+  previousX = event.clientX;
+});
+
+lineContainer.addEventListener('mousemove', (event) => {
+  if (isDraggingHorizontal) {
+    const currentY = event.clientY;
+    const offset = currentY - previousY;
+    previousY = currentY;
+
+    const currentTop = parseInt(horizontalLine.style.top) || 0;
+    horizontalLine.style.top = `${currentTop + offset}px`;
+  }
+
+  if (isDraggingVertical) {
+    const currentX = event.clientX;
+    const offset = currentX - previousX;
+    previousX = currentX;
+
+    const currentLeft = parseInt(verticalLine.style.left) || 0;
+    verticalLine.style.left = `${currentLeft + offset}px`;
+  }
+});
+
+lineContainer.addEventListener('mouseup', () => {
+  isDraggingHorizontal = false;
+  isDraggingVertical = false;
+});
+	  </script>
+</body>
+</html>
